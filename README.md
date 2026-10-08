@@ -1,4 +1,4 @@
-###1. Controller
+## **1. Controller**
 
 The goal of Lab 4 was to modify the Lab 3 line-following controller so that the robot could follow the track at full speed. The main difference from Lab 3 is that the robot is no longer allowed to use a reduced base_speed. At every control cycle, one wheel must operate at 100% PWM, while the controller can only slow down the other wheel to steer the robot.
 
@@ -9,7 +9,7 @@ A3 — right sensor
 
 The controller is based on a PID controller.
 
-###2. PID Controller
+## **2. PID Controller**
 
 The robot uses a PID controller to calculate the steering correction from the line-following error. The proportional term responds to the current error, the integral term accumulates persistent error, and the derivative term responds to how quickly the error changes.
 
@@ -33,7 +33,7 @@ The initial gains were \(K_p=1.5\), \(K_i=0.005\), and \(K_d=0.8\), with a fixed
 
 The integral term was retained from the Lab 3 PID controller because it helps compensate for persistent small errors caused by sensor differences or mechanical imbalance. However, the integral contribution was kept small because excessive accumulation at full speed could cause overshoot and make sharp turns less stable.
 
-###3. Controller Output Limitation
+## **3. Controller Output Limitation**
 
 The controller output is limited to:
 
@@ -61,7 +61,7 @@ $$ u=200 $$
 
 the inner wheel can be driven at -100%, allowing the robot to make an extremely sharp correction.
 
-###4.Full-Speed Motor Control
+## **4.Full-Speed Motor Control**
 
 The most important change from Lab 3 is the motor mixing.
 
@@ -97,30 +97,34 @@ For example:
 | -200 | -100 |  100 |
 
 
-###5. Control Loop
-Read A4 and A3
-        ↓
-Normalize sensor values
-        ↓
-Calculate error
-        ↓
-Calculate PID controller
-        ↓
-Clamp u to [-200, 200]
-        ↓
-Calculate M3 and M4
-        ↓
-Set motor powers
-        ↓
-Wait 30 ms
-        ↓
-Repeat
+## **5. Control Loop**
+BEGIN
 
-###6. What changed?
+        Read A4 and A3
+                ↓
+        Normalize sensor values
+                ↓
+        Calculate error
+                ↓
+        Calculate PID controller
+                ↓
+        Clamp u to [-200, 200]
+                ↓
+        Calculate M3 and M4
+                ↓
+        Set motor powers
+                ↓
+        Wait 30 ms
+                ↓
+        Repeat
+
+END
+
+## **6. What changed?**
 
 In Lab 3, the robot used a PID controller with a reduced base speed and changed both motor speeds around that base value. For Lab 4, I kept the PID structure but removed the base speed because one wheel must always operate at 100% PWM, so the controller now steers by braking only the inner wheel. I increased the controller output range to ±200. The main limitation on lap time was balancing aggressive PID corrections on sharp curves with stability, because excessive integral accumulation or derivative corrections can slow the robot or cause it to leave the track.
 
-###7. Complete pseudocode for this project:
+## **7. Complete pseudocode for this projec**
 BEGIN
 
     ref_L = sensor A4
